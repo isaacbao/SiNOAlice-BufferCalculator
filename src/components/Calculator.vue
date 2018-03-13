@@ -49,6 +49,20 @@
       effectExpectation: {physicATK: 0, magicATK: 0.066, physicDEF: 0, magicDEF: 0.108},
       effectMax: {physicATK: 0, magicATK: 0.088, physicDEF: 0, magicDEF: 0.144}
     },
+    debuffLPhysicalATK10: {
+      name: "刀錆ノ呪詛(Ⅳ)",
+      description: "单体、物攻",
+      effectMin: {physicATK: 0.54, magicATK: 0, physicDEF: 0, magicDEF: 0},
+      effectExpectation: {physicATK: 0.54, magicATK: 0, physicDEF: 0, magicDEF: 0},
+      effectMax: {physicATK: 0.54, magicATK: 0, physicDEF: 0, magicDEF: 0}
+    },
+    debuffLPhysicalATK10: {
+      name: "刀錆ノ呪詛(Ⅳ)",
+      description: "单体、物攻",
+      effectMin: {physicATK: 0.54, magicATK: 0, physicDEF: 0, magicDEF: 0},
+      effectExpectation: {physicATK: 0.54, magicATK: 0, physicDEF: 0, magicDEF: 0},
+      effectMax: {physicATK: 0.54, magicATK: 0, physicDEF: 0, magicDEF: 0}
+    },
   };
 
   export default {
