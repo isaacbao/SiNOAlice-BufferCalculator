@@ -21,7 +21,39 @@
 <body>
 
 <div id="app">
-  <active-skill-dropdown :selected='selected' :options='active_options'></active-skill-dropdown>
+  <table class='active-skill-table' border="1" >
+    <tr>
+      <th>主动技能</th>
+      <th>主动技能等级</th>
+    </tr>
+    <tr v-for="active_id in active_ids" class='active-skill-group' :id='active_id'>
+      <td><active-skill-dropdown :selected='selected' :options='active_options'></active-skill-dropdown></td>
+      <td><input class='skill-lv' type='text'/></td>
+    </tr>
+  </table>
+
+  <table border="1" class="result-table" id="debuff-effect">
+    <tr>
+      <td colspan="2">攻debuff</td>
+      <td colspan="2">防debuff</td>
+    </tr>
+    <tr>
+      <td colspan="2">100</td>
+      <td colspan="2">100</td>
+    </tr>
+    <tr>
+      <td colspan="1">物攻debuff</td>
+      <td colspan="1">魔攻debuff</td>
+      <td colspan="1">物防debuff</td>
+      <td colspan="1">魔防debuff</td>
+    </tr>
+    <tr>
+      <td colspan="1" id="physic-ATK-effect">50</td>
+      <td colspan="1" id="magic-ATK-effect">50</td>
+      <td colspan="1" id="physic-DEF-effect">50</td>
+      <td colspan="1" id="magic-DEF-effect">50</td>
+    </tr>
+  </table>
 </div>
 
 </body>
@@ -446,7 +478,7 @@
   }
 
   Vue.component('active-skill-dropdown', {
-    template: '<select v-model="selectedOption" v-on:change="notify_selection"><option v-for="option in options" :value="option.name">{{ option.name +"("+option.description+")"}}</option></select>',
+    template: '<select class="active-skill" v-model="selectedOption" v-on:change="notify_selection"><option v-for="option in options" :value="option.id">{{ option.name +"("+option.description+")"}}</option></select>',
     props: ['options', 'selected'],
     data() {
       return {
@@ -471,8 +503,9 @@
       })
     },
     data: {
+      active_ids: ["active-skill-01", "active-skill-02", "active-skill-03", "active-skill-04", "active-skill-05", "active-skill-06", "active-skill-07", "active-skill-08", "active-skill-09", "active-skill-10", "active-skill-11", "active-skill-12", "active-skill-13", "active-skill-14", "active-skill-15", "active-skill-16", "active-skill-17", "active-skill-18", "active-skill-19", "active-skill-20"],
       active_options: activeSkillDatabase,
-      selected: 'bar'
+      selected: ''
     }
   });
 </script>
