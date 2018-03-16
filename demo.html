@@ -19,8 +19,8 @@
 </head>
 
 <style type="text/css">
-  div.skills {
-
+  .skills {
+    float: left;
   }
 </style>
 
@@ -39,7 +39,8 @@
         <td><input class='skill-lv' type='text' value='15'/></td>
       </tr>
     </table>
-
+  </div>
+  <div class="skills">
     <table class='passive-skill-table' border="1">
       <tr>
         <th>被动技能</th>
@@ -66,6 +67,14 @@
       <td><input class='status-input' type='text' id="statusMagicATK"/></td>
       <td><label for='statusMagicDEF'>魔防</label></td>
       <td><input class='status-input' type='text' id="statusMagicDEF"/></td>
+    </tr>
+    <tr>
+      <td><label for='statusMagicATK'>职业</label></td>
+      <td><select class='status-input' id="job">
+        <option value="book">书佬</option>
+        <option value="instrument">琴佬</option>
+        <option value="other">其他</option>
+      </select></td>
     </tr>
     <tr>
       <td><label for='physicDPS'>物攻人数</label></td>
@@ -627,32 +636,32 @@
 
   function resetResult(result) {
     result = {
-      exceptedPhysicATKSkillCoefficient: 0,
-      exceptedPhysicDEFSkillCoefficient: 0,
-      exceptedMagicATKSkillCoefficient: 0,
-      exceptedMagicDEFSkillCoefficient: 0,
-      exceptedEffectivePhysicATKSkillCoefficient: 0,
-      exceptedEffectivePhysicDEFSkillCoefficient: 0,
-      exceptedEffectiveMagicATKSkillCoefficient: 0,
-      exceptedEffectiveMagicDEFSkillCoefficient: 0
+      exceptedPhysicATK: 0,
+      exceptedPhysicDEF: 0,
+      exceptedMagicATK: 0,
+      exceptedMagicDEF: 0,
+      exceptedEffectivePhysicATK: 0,
+      exceptedEffectivePhysicDEF: 0,
+      exceptedEffectiveMagicATK: 0,
+      exceptedEffectiveMagicDEF: 0
     };
   }
 
-  function calculateEffectiveness(skillCoefficient) {
+  function calculateEffectiveness(coefficient) {
     var statusPhysicATK = document.getElementById("statusPhysicATK").value;
     var statusPhysicDEF = document.getElementById("statusPhysicDEF").value;
     var statusMagicATK = document.getElementById("statusMagicATK").value;
     var statusMagicDEF = document.getElementById("statusMagicDEF").value;
     var result = {
-      physicATK: Math.floor(skillCoefficient.exceptedPhysicATKSkillCoefficient * statusPhysicATK),
-      physicDEF: Math.floor(skillCoefficient.exceptedPhysicDEFSkillCoefficient * statusPhysicDEF),
-      magicATK: Math.floor(skillCoefficient.exceptedMagicATKSkillCoefficient * statusMagicATK),
-      magicDEF: Math.floor(skillCoefficient.exceptedMagicDEFSkillCoefficient * statusMagicDEF)
+      physicATK: Math.floor(coefficient.exceptedPhysicATK * statusPhysicATK),
+      physicDEF: Math.floor(coefficient.exceptedPhysicDEF * statusPhysicDEF),
+      magicATK: Math.floor(coefficient.exceptedMagicATK * statusMagicATK),
+      magicDEF: Math.floor(coefficient.exceptedMagicDEF * statusMagicDEF)
     };
     return result;
   }
 
-  function showEffectiveness(result) {
+  function showDebuff(result) {
     document.getElementById("physic-ATK-effect").innerText = result.physicATK;
     document.getElementById("physic-DEF-effect").innerText = result.physicDEF;
     document.getElementById("magic-ATK-effect").innerText = result.magicATK;
@@ -663,15 +672,25 @@
 
   function calculate() {
 //    resetResult();
-    var skillCoefficient = {
-      exceptedPhysicATKSkillCoefficient: 0,
-      exceptedPhysicDEFSkillCoefficient: 0,
-      exceptedMagicATKSkillCoefficient: 0,
-      exceptedMagicDEFSkillCoefficient: 0,
-      exceptedEffectivePhysicATKSkillCoefficient: 0,
-      exceptedEffectivePhysicDEFSkillCoefficient: 0,
-      exceptedEffectiveMagicATKSkillCoefficient: 0,
-      exceptedEffectiveMagicDEFSkillCoefficient: 0
+    var debuffCoefficient = {
+      exceptedPhysicATK: 0,
+      exceptedPhysicDEF: 0,
+      exceptedMagicATK: 0,
+      exceptedMagicDEF: 0,
+      exceptedEffectivePhysicATK: 0,
+      exceptedEffectivePhysicDEF: 0,
+      exceptedEffectiveMagicATK: 0,
+      exceptedEffectiveMagicDEF: 0
+    };
+    var buffCoefficient = {
+      exceptedPhysicATK: 0,
+      exceptedPhysicDEF: 0,
+      exceptedMagicATK: 0,
+      exceptedMagicDEF: 0,
+      exceptedEffectivePhysicATK: 0,
+      exceptedEffectivePhysicDEF: 0,
+      exceptedEffectiveMagicATK: 0,
+      exceptedEffectiveMagicDEF: 0
     };
     var activeSkillGroupsElements = document.getElementsByClassName("active-skill-group");
     var physicDPSPercentage = document.getElementById("physicDPS").value / 5;
@@ -684,14 +703,22 @@
         var selectedActiveSkill = ACTIVE_SKILL_DB[selectedActiveSkillId];
         var skillLV = activeSkillGroup.querySelector("input.skill-lv").value;
         var slvAddition = getSkillLVAddition(skillLV);
-        skillCoefficient.exceptedPhysicATKSkillCoefficient += selectedActiveSkill.effectExpectation.physicATK * slvAddition;
-        skillCoefficient.exceptedPhysicDEFSkillCoefficient += selectedActiveSkill.effectExpectation.physicDEF * slvAddition;
-        skillCoefficient.exceptedMagicATKSkillCoefficient += selectedActiveSkill.effectExpectation.magicATK * slvAddition;
-        skillCoefficient.exceptedMagicDEFSkillCoefficient += selectedActiveSkill.effectExpectation.magicDEF * slvAddition;
+        if (selectedActiveSkill.type === "debuff") {
+          debuffCoefficient.exceptedPhysicATK += selectedActiveSkill.effectExpectation.physicATK * slvAddition;
+          debuffCoefficient.exceptedPhysicDEF += selectedActiveSkill.effectExpectation.physicDEF * slvAddition;
+          debuffCoefficient.exceptedMagicATK += selectedActiveSkill.effectExpectation.magicATK * slvAddition;
+          debuffCoefficient.exceptedMagicDEF += selectedActiveSkill.effectExpectation.magicDEF * slvAddition;
+        }else{
+          buffCoefficient.exceptedPhysicATK += selectedActiveSkill.effectExpectation.physicATK * slvAddition;
+          buffCoefficient.exceptedPhysicDEF += selectedActiveSkill.effectExpectation.physicDEF * slvAddition;
+          buffCoefficient.exceptedMagicATK += selectedActiveSkill.effectExpectation.magicATK * slvAddition;
+          buffCoefficient.exceptedMagicDEF += selectedActiveSkill.effectExpectation.magicDEF * slvAddition;
+        }
       }
     });
-    var result = calculateEffectiveness(skillCoefficient);
-    showEffectiveness(result);
+    var debuffResult = calculateEffectiveness(debuffCoefficient);
+    showDebuff(debuffResult);
+
   }
 
   function getSkillLVAddition(slv) {
