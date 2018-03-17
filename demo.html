@@ -50,6 +50,10 @@
         </td>
         <td><input class='skill-lv' type='text' value='15'/></td>
       </tr>
+      <tr>
+        <td>平均技能等級</td>
+        <td id="avg-active-skill-lv">?</td>
+      </tr>
     </table>
   </div>
   <div class="skills">
@@ -63,6 +67,10 @@
           <passive-skill-dropdown :selected='passive_selected' :options='passive_options'></passive-skill-dropdown>
         </td>
         <td><input class='skill-lv' type='text' value='15'/></td>
+      </tr>
+      <tr>
+        <td>平均技能等級</td>
+        <td id="avg-passive-skill-lv">?</td>
       </tr>
     </table>
   </div>
@@ -83,11 +91,14 @@
     </tr>
     <tr>
       <td><label for='statusMagicATK'>职业</label></td>
-      <td><select class='status-input' id="job">
-        <option value="book">书佬</option>
-        <option value="instrument">琴佬</option>
-        <option value="other">其他</option>
-      </select></td>
+      <td>
+        <select class='status-input' id="job">
+          <option value="book">书佬</option>
+          <option value="instrument">琴佬</option>
+          <option value="other">其他</option>
+        </select>
+      </td>
+      <td></td>
       <td></td>
     </tr>
     <tr>
@@ -631,26 +642,31 @@
   };
   var PASSIVE_SKILL_DB = {
     buffUp10: {
+      id: "buffUp10",
       name: "補助支援(壱)",
       type: PASSIVE_SKILL_TYPE.BUFF_UP,
       basicEffect: {max: 0.1, expectation: 0.1, min: 0.1}
     },
     buffUp20: {
+      id: "buffUp20",
       name: "補助支援(弐)",
       type: PASSIVE_SKILL_TYPE.BUFF_UP,
       basicEffect: {max: 0.2, expectation: 0.2, min: 0.2}
     },
     buffUp25: {
+      id: "buffUp25",
       name: "起死回生(弐)",
       type: PASSIVE_SKILL_TYPE.BUFF_UP,
-      basicEffect: {max: 0.3, expectation: 0.25, min: 0.2}
+      basicEffect: {max: 0.27, expectation: 0.225, min: 0.18}
     },
     buffUp30: {
-      name: "起死回生(参)",
+      id: "buffUp30",
+      name: "補助支援(参)",
       type: PASSIVE_SKILL_TYPE.BUFF_UP,
       basicEffect: {max: 0.3, expectation: 0.3, min: 0.3}
     },
     physicATK20: {
+      id: "physicATK20",
       name: "刀刃展開(Ⅱ)",
       type: PASSIVE_SKILL_TYPE.STATUS_UP,
       effectMin: {physicATK: 0.0037, magicATK: 0, physicDEF: 0, magicDEF: 0},
@@ -658,6 +674,7 @@
       effectMax: {physicATK: 0.0185, magicATK: 0, physicDEF: 0, magicDEF: 0}
     },
     magicATK10: {
+      id: "magicATK10",
       name: "方陣展開(Ⅰ)",
       type: PASSIVE_SKILL_TYPE.STATUS_UP,
       effectMin: {physicATK: 0, magicATK: 0.0027, physicDEF: 0, magicDEF: 0},
@@ -665,6 +682,7 @@
       effectMax: {physicATK: 0, magicATK: 0.0135, physicDEF: 0, magicDEF: 0}
     },
     allATK20: {
+      id: "allATK20",
       name: "武器補修(Ⅱ)",
       type: PASSIVE_SKILL_TYPE.STATUS_UP,
       effectMin: {physicATK: 0.0033, magicATK: 0.0033, physicDEF: 0, magicDEF: 0},
@@ -672,6 +690,7 @@
       effectMax: {physicATK: 0.0165, magicATK: 0.0165, physicDEF: 0, magicDEF: 0}
     },
     physicDEF10: {
+      id: "physicDEF10",
       name: "鉄盾展開(Ⅰ)",
       type: PASSIVE_SKILL_TYPE.STATUS_UP,
       effectMin: {physicATK: 0, magicATK: 0, physicDEF: 0.004, magicDEF: 0},
@@ -679,6 +698,7 @@
       effectMax: {physicATK: 0, magicATK: 0, physicDEF: 0.02, magicDEF: 0}
     },
     physicDEF20: {
+      id: "physicDEF20",
       name: "鉄盾展開(Ⅱ)",
       type: PASSIVE_SKILL_TYPE.STATUS_UP,
       effectMin: {physicATK: 0, magicATK: 0, physicDEF: 0.006, magicDEF: 0},
@@ -686,6 +706,7 @@
       effectMax: {physicATK: 0, magicATK: 0, physicDEF: 0.03, magicDEF: 0}
     },
     allDEF10: {
+      id: "allDEF10",
       name: "防具補修(Ⅰ)",
       type: PASSIVE_SKILL_TYPE.STATUS_UP,
       effectMin: {physicATK: 0, magicATK: 0, physicDEF: 0.004, magicDEF: 0.004},
@@ -693,6 +714,7 @@
       effectMax: {physicATK: 0, magicATK: 0, physicDEF: 0.02, magicDEF: 0.02}
     },
     allDEF20: {
+      id: "allDEF20",
       name: "防具補修(Ⅱ)",
       type: PASSIVE_SKILL_TYPE.STATUS_UP,
       effectMin: {physicATK: 0, magicATK: 0, physicDEF: 0.006, magicDEF: 0.006},
@@ -700,11 +722,13 @@
       effectMax: {physicATK: 0, magicATK: 0, physicDEF: 0.03, magicDEF: 0.03}
     },
     mahouGay10: {
+      id: "mahouGay10",
       name: "魔力供給(壱)",
       type: PASSIVE_SKILL_TYPE.GAY,
       effect: 0.8
     },
     mahouGay20: {
+      id: "mahouGay20",
       name: "魔力供給(弐)",
       type: PASSIVE_SKILL_TYPE.GAY,
       effect: 0.7
@@ -764,18 +788,37 @@
     }
   });
 
-  function calculateEffectiveness(coefficient) {
-    var statusPhysicATK = document.getElementById("statusPhysicATK").value;
-    var statusPhysicDEF = document.getElementById("statusPhysicDEF").value;
-    var statusMagicATK = document.getElementById("statusMagicATK").value;
-    var statusMagicDEF = document.getElementById("statusMagicDEF").value;
+  function calculateEffectiveness(coefficient, status, buffUps, passiveSkillCoefficient, jobAddition) {
+    var buffUpEffective = 1;
+    buffUps.forEach(function (buffUp) {
+      buffUpEffective += buffUp.effect * buffUp.toggleRate;
+    });
+    var otherAddition = buffUpEffective * jobAddition;
+
+    var passiveStatusChangeEffect = {
+      physicATK: 0,
+      physicDEF: 0,
+      magicATK: 0,
+      magicDEF: 0,
+      effectivePhysicATK: 0,
+      effectiveMagicATK: 0
+    };
+    if (passiveSkillCoefficient) {
+      passiveStatusChangeEffect.physicATK += Math.floor(passiveSkillCoefficient.exceptedPhysicATK * status.physicATK);
+      passiveStatusChangeEffect.physicDEF += Math.floor(passiveSkillCoefficient.exceptedPhysicDEF * status.physicDEF);
+      passiveStatusChangeEffect.magicATK += Math.floor(passiveSkillCoefficient.exceptedMagicATK * status.magicATK);
+      passiveStatusChangeEffect.magicDEF += Math.floor(passiveSkillCoefficient.exceptedMagicDEF * status.magicDEF);
+      passiveStatusChangeEffect.effectivePhysicATK += Math.floor(passiveSkillCoefficient.exceptedEffectivePhysicATK * status.physicATK);
+      passiveStatusChangeEffect.effectiveMagicATK += Math.floor(passiveSkillCoefficient.exceptedEffectiveMagicATK * status.magicATK);
+    }
+
     var result = {
-      physicATK: Math.floor(coefficient.exceptedPhysicATK * statusPhysicATK),
-      physicDEF: Math.floor(coefficient.exceptedPhysicDEF * statusPhysicDEF),
-      magicATK: Math.floor(coefficient.exceptedMagicATK * statusMagicATK),
-      magicDEF: Math.floor(coefficient.exceptedMagicDEF * statusMagicDEF),
-      effectivePhysicATK: Math.floor(coefficient.exceptedEffectivePhysicATK * statusPhysicATK),
-      effectiveMagicATK: Math.floor(coefficient.exceptedEffectiveMagicATK * statusMagicATK)
+      physicATK: Math.floor(coefficient.exceptedPhysicATK * status.physicATK * otherAddition) + passiveStatusChangeEffect.physicATK,
+      physicDEF: Math.floor(coefficient.exceptedPhysicDEF * status.physicDEF * otherAddition) + passiveStatusChangeEffect.physicDEF,
+      magicATK: Math.floor(coefficient.exceptedMagicATK * status.magicATK * otherAddition) + passiveStatusChangeEffect.magicATK,
+      magicDEF: Math.floor(coefficient.exceptedMagicDEF * status.magicDEF * otherAddition) + passiveStatusChangeEffect.magicDEF,
+      effectivePhysicATK: Math.floor(coefficient.exceptedEffectivePhysicATK * status.physicATK * otherAddition) + passiveStatusChangeEffect.effectivePhysicATK,
+      effectiveMagicATK: Math.floor(coefficient.exceptedEffectiveMagicATK * status.magicATK * otherAddition) + passiveStatusChangeEffect.effectiveMagicATK
     };
     return result;
   }
@@ -802,25 +845,25 @@
     document.getElementById("buff-DEF-effect").innerText = result.physicDEF + result.magicDEF;
   }
 
-
   function showSpConsume(spConsume) {
-    document.getElementById("sp-consume").innerText = spConsume.withoutGay;
-    document.getElementById("sp-consume-with-gay").innerText = spConsume.withGay;
+    document.getElementById("sp-consume").innerText = spConsume.withoutGay + "";
+    document.getElementById("sp-consume-with-gay").innerText = spConsume.withGay + "";
   }
 
   /**
    * 计算总技能系数
    * @param sumCoefficient 总技能系数
-   * @param selectedActiveSkill 主动技能
+   * @param selectedSkill 技能
    * @param slvAddition 技能等级加成
    * @param physicDPS 物理输出人数
    * @param magicDPS 魔法输出人数
+   * @param passiveToggleFrequency 被動技能的觸發頻率（主動技能的這個參數默認為1）
    */
-  function calculateSumCoefficient(sumCoefficient, selectedActiveSkill, slvAddition, physicDPS, magicDPS) {
-    sumCoefficient.exceptedPhysicATK += selectedActiveSkill.effectExpectation.physicATK * slvAddition;
-    sumCoefficient.exceptedPhysicDEF += selectedActiveSkill.effectExpectation.physicDEF * slvAddition;
-    sumCoefficient.exceptedMagicATK += selectedActiveSkill.effectExpectation.magicATK * slvAddition;
-    sumCoefficient.exceptedMagicDEF += selectedActiveSkill.effectExpectation.magicDEF * slvAddition;
+  function calculateSumCoefficient(sumCoefficient, selectedSkill, slvAddition, physicDPS, magicDPS, passiveToggleFrequency) {
+    sumCoefficient.exceptedPhysicATK += selectedSkill.effectExpectation.physicATK * slvAddition * passiveToggleFrequency;
+    sumCoefficient.exceptedPhysicDEF += selectedSkill.effectExpectation.physicDEF * slvAddition * passiveToggleFrequency;
+    sumCoefficient.exceptedMagicATK += selectedSkill.effectExpectation.magicATK * slvAddition * passiveToggleFrequency;
+    sumCoefficient.exceptedMagicDEF += selectedSkill.effectExpectation.magicDEF * slvAddition * passiveToggleFrequency;
 
     physicDPS = Number(physicDPS);
     magicDPS = Number(magicDPS);
@@ -829,57 +872,252 @@
     //二体技能飘到魔法输出头上的概率
     var hitMagicProb = (magicDPS - 1) / 4;
 
-    if (selectedActiveSkill.property === "both") {
-      sumCoefficient.exceptedEffectivePhysicATK += sumCoefficient.exceptedPhysicATK * physicDPS / 5;
-      sumCoefficient.exceptedEffectiveMagicATK += sumCoefficient.exceptedMagicATK * magicDPS / 5;
+    if (selectedSkill.property === "both") {
+      sumCoefficient.exceptedEffectivePhysicATK += selectedSkill.effectExpectation.physicATK * physicDPS / 5;
+      sumCoefficient.exceptedEffectiveMagicATK += selectedSkill.effectExpectation.magicATK * magicDPS / 5;
     }
-    //
-    if (selectedActiveSkill.property === "physic") {
+    if (selectedSkill.property === "physic") {
       //都没物理输出有个鬼的有效物攻buff量
       if (physicDPS === 0) {
         return;
       }
 
-      if (selectedActiveSkill.target === TARGET_TYPE.one) {
-        sumCoefficient.exceptedEffectivePhysicATK += sumCoefficient.exceptedPhysicATK;
+      if (selectedSkill.target === TARGET_TYPE.one) {
+        sumCoefficient.exceptedEffectivePhysicATK += selectedSkill.effectExpectation.physicATK;
       }
-      if (selectedActiveSkill.target === TARGET_TYPE.oneOrTwo) {
-        sumCoefficient.exceptedEffectivePhysicATK += (selectedActiveSkill.effectMin.physicATK + (selectedActiveSkill.effectExpectation.physicATK - selectedActiveSkill.effectMin.physicATK) * hitPhysicProb) * slvAddition;
+      if (selectedSkill.target === TARGET_TYPE.oneOrTwo) {
+        sumCoefficient.exceptedEffectivePhysicATK += (selectedSkill.effectMin.physicATK + (selectedSkill.effectExpectation.physicATK - selectedSkill.effectMin.physicATK) * hitPhysicProb) * slvAddition;
       }
-      if (selectedActiveSkill.target === TARGET_TYPE.two) {
-        sumCoefficient.exceptedEffectivePhysicATK += (selectedActiveSkill.effectExpectation.physicATK / 2 + selectedActiveSkill.effectExpectation.physicATK / 2 * hitPhysicProb) * slvAddition;
+      if (selectedSkill.target === TARGET_TYPE.two) {
+        sumCoefficient.exceptedEffectivePhysicATK += (selectedSkill.effectExpectation.physicATK / 2 + selectedSkill.effectExpectation.physicATK / 2 * hitPhysicProb) * slvAddition;
       }
     }
-    if (selectedActiveSkill.property === "magic") {
+    if (selectedSkill.property === "magic") {
       //都没魔法输出有个鬼的有效魔法buff量
       if (magicDPS === 0) {
         return;
       }
 
-      if (selectedActiveSkill.target === TARGET_TYPE.one) {
-        sumCoefficient.exceptedEffectiveMagicATK += sumCoefficient.exceptedMagicATK;
+      if (selectedSkill.target === TARGET_TYPE.one) {
+        sumCoefficient.exceptedEffectiveMagicATK += selectedSkill.effectExpectation.magicATK;
       }
-      if (selectedActiveSkill.target === TARGET_TYPE.oneOrTwo) {
-        sumCoefficient.exceptedEffectiveMagicATK += (selectedActiveSkill.effectMin.magicATK + (selectedActiveSkill.effectExpectation.magicATK - selectedActiveSkill.effectMin.magicATK) * hitMagicProb) * slvAddition;
+      if (selectedSkill.target === TARGET_TYPE.oneOrTwo) {
+        sumCoefficient.exceptedEffectiveMagicATK += (selectedSkill.effectMin.magicATK + (selectedSkill.effectExpectation.magicATK - selectedSkill.effectMin.magicATK) * hitMagicProb) * slvAddition;
       }
-      if (selectedActiveSkill.target === TARGET_TYPE.two) {
-        sumCoefficient.exceptedEffectiveMagicATK += (selectedActiveSkill.effectExpectation.magicATK / 2 + selectedActiveSkill.effectExpectation.magicATK / 2 * hitMagicProb) * slvAddition;
+      if (selectedSkill.target === TARGET_TYPE.two) {
+        sumCoefficient.exceptedEffectiveMagicATK += (selectedSkill.effectExpectation.magicATK / 2 + selectedSkill.effectExpectation.magicATK / 2 * hitMagicProb) * slvAddition;
       }
     }
   }
 
 
-  function calculateSpConsume(spConsume,activeSkill, gay) {
+  function calculateSpConsume(spConsume, activeSkill, gay) {
     spConsume.withoutGay += activeSkill.sp;
+    var combinationAmount = Math.pow(2, gay.length);
+    for (var combination = 0; combination < combinationAmount; combination++) {
+      var binaryString = combination.toString(2);
+      while (binaryString.length < gay.length) {
+        binaryString = "0" + binaryString;
+      }
+      var spDiscount = 1;
+      var probability = 1;
+      for (var gayIndex = 0; gayIndex < gay.length; gayIndex++) {
+        var currentGay = gay[gayIndex];
+        if (binaryString.charAt(gayIndex) === "1") {
+          spDiscount *= currentGay.effect;
+          probability *= currentGay.toggleRate;
+        } else {
+          probability *= currentGay.dudRate;
+        }
+      }
+      spConsume.withGay += activeSkill.sp * spDiscount * probability;
+    }
+    spConsume.withGay = Math.floor(spConsume.withGay);
   }
 
+  function saveSelectedActiveSkills() {
+    var activeSkillGroupsElements = document.getElementsByClassName("active-skill-group");
+    var selectedActiveSkills = [];
+    var skillLvSum = 0;
+    Array.from(activeSkillGroupsElements).forEach(function (activeSkillGroup) {
+      var activeSkillSelect = activeSkillGroup.querySelector(".active-skill");
+      var selectedOption = activeSkillSelect.options[activeSkillSelect.selectedIndex];
+      if (selectedOption) {
+        var skillLv = Number(activeSkillGroup.querySelector("input.skill-lv").value);
+        skillLvSum += skillLv;
+        var activeSkill = {
+          activeSkillId: selectedOption.value,
+          skillLv: skillLv
+        };
+        selectedActiveSkills.push(activeSkill);
+      }
+    });
+    var skillLvAvg = skillLvSum / selectedActiveSkills.length;
+    skillLvAvg = skillLvAvg.toFixed(2);
+    document.getElementById("avg-active-skill-lv").innerText = skillLvAvg + "";
+    localStorage.selectedActiveSkills = JSON.stringify(selectedActiveSkills);
+  }
+
+  function initSelectedActiveSkill() {
+    if (!localStorage.selectedActiveSkills) {
+      return;
+    }
+    var selectedActiveSkills = JSON.parse(localStorage.selectedActiveSkills);
+    var activeSkillGroups = Array.from(document.getElementsByClassName("active-skill-group"));
+    var counter = 0;
+    selectedActiveSkills.forEach(function (selectedActiveSkill) {
+      var activeSkillGroup = activeSkillGroups[counter];
+      var activeSkillSelect = activeSkillGroup.querySelector(".active-skill");
+      var options = activeSkillSelect.options;
+      for (var opt, j = 0; opt = options[j]; j++) {
+        if (opt.value === selectedActiveSkill.activeSkillId) {
+          activeSkillSelect.selectedIndex = j;
+          break;
+        }
+      }
+      activeSkillGroup.querySelector("input.skill-lv").value = selectedActiveSkill.skillLv;
+      counter++;
+    });
+  }
+
+  function saveSelectedPassiveSkills() {
+    var passiveSkillGroupsElements = document.getElementsByClassName("passive-skill-group");
+    var selectedPassiveSkills = [];
+    var skillLvSum = 0;
+    Array.from(passiveSkillGroupsElements).forEach(function (passiveSkillGroup) {
+      var passiveSkillSelect = passiveSkillGroup.querySelector(".passive-skill");
+      var selectedOption = passiveSkillSelect.options[passiveSkillSelect.selectedIndex];
+      if (selectedOption) {
+        var skillLv = Number(passiveSkillGroup.querySelector("input.skill-lv").value);
+        skillLvSum += skillLv;
+        var passiveSkill = {
+          passiveSkillId: selectedOption.value,
+          skillLv: skillLv
+        };
+        selectedPassiveSkills.push(passiveSkill);
+      }
+    });
+    var skillLvAvg = skillLvSum / selectedPassiveSkills.length;
+    skillLvAvg = skillLvAvg.toFixed(2);
+    document.getElementById("avg-passive-skill-lv").innerText = skillLvAvg + "";
+    localStorage.selectedPassiveSkills = JSON.stringify(selectedPassiveSkills);
+  }
+
+  function initSelectedPassiveSkill() {
+    if (!localStorage.selectedPassiveSkills) {
+      return;
+    }
+    var selectedPassiveSkills = JSON.parse(localStorage.selectedPassiveSkills);
+    var passiveSkillGroups = Array.from(document.getElementsByClassName("passive-skill-group"));
+    var counter = 0;
+    selectedPassiveSkills.forEach(function (selectedPassiveSkill) {
+      var passiveSkillGroup = passiveSkillGroups[counter];
+      var passiveSkillSelect = passiveSkillGroup.querySelector(".passive-skill");
+      var options = passiveSkillSelect.options;
+      for (var opt, j = 0; opt = options[j]; j++) {
+        if (opt.value === selectedPassiveSkill.passiveSkillId) {
+          passiveSkillSelect.selectedIndex = j;
+          break;
+        }
+      }
+      passiveSkillGroup.querySelector("input.skill-lv").value = selectedPassiveSkill.skillLv;
+      counter++;
+    });
+  }
+
+  function saveStatus() {
+    var job;
+    var jobSelect = document.getElementById("job");
+    var selectedOption = jobSelect.options[jobSelect.selectedIndex];
+    if (selectedOption) {
+      job = selectedOption.value;
+    }
+    var status = {
+      enemyPhysicDPS: document.getElementById("enemyPhysicDPS").value,
+      enemyMagicDPS: document.getElementById("enemyMagicDPS").value,
+      ourPhysicDPS: document.getElementById("ourPhysicDPS").value,
+      ourMagicDPS: document.getElementById("ourMagicDPS").value,
+      physicATK: document.getElementById("statusPhysicATK").value,
+      physicDEF: document.getElementById("statusPhysicDEF").value,
+      magicATK: document.getElementById("statusMagicATK").value,
+      magicDEF: document.getElementById("statusMagicDEF").value,
+      job: job
+    };
+    localStorage.status = JSON.stringify(status);
+  }
+
+  function initStatus() {
+    if (!localStorage.status) {
+      return;
+    }
+    var status = JSON.parse(localStorage.status);
+    document.getElementById("enemyPhysicDPS").value = status.enemyPhysicDPS;
+    document.getElementById("enemyMagicDPS").value = status.enemyMagicDPS;
+    document.getElementById("ourPhysicDPS").value = status.ourPhysicDPS;
+    document.getElementById("ourMagicDPS").value = status.ourMagicDPS;
+    document.getElementById("statusPhysicATK").value = status.physicATK;
+    document.getElementById("statusPhysicDEF").value = status.physicDEF;
+    document.getElementById("statusMagicATK").value = status.magicATK;
+    document.getElementById("statusMagicDEF").value = status.magicDEF;
+    var jobSelect = document.getElementById("job");
+    var options = jobSelect.options;
+    for (var opt, j = 0; opt = options[j]; j++) {
+      if (opt.value === status.job) {
+        jobSelect.selectedIndex = j;
+        break;
+      }
+    }
+  }
+
+  function init() {
+    initSelectedActiveSkill();
+    initSelectedPassiveSkill();
+    initStatus();
+  }
+
+  init();
 
   function calculate() {
-    var buffUp = [];
-    var gay = [];
-    var statusChange = [];
-    var passiveSkillGroupsElements = document.getElementsByClassName("passive-skill-group");
+    saveSelectedActiveSkills();
+    saveSelectedPassiveSkills();
+    saveStatus();
 
+    var status = JSON.parse(localStorage.status);
+
+    var buffUps = [];
+    var gays = [];
+    var passiveBuffCoefficient = {
+      exceptedPhysicATK: 0,
+      exceptedPhysicDEF: 0,
+      exceptedMagicATK: 0,
+      exceptedMagicDEF: 0,
+      exceptedEffectivePhysicATK: 0,
+      exceptedEffectiveMagicATK: 0,
+    };
+    var selectedPassiveSkills = JSON.parse(localStorage.selectedPassiveSkills);
+    selectedPassiveSkills.forEach(function (selectedPassiveSkill) {
+      var passiveSkill = PASSIVE_SKILL_DB[selectedPassiveSkill.passiveSkillId];
+      var slvAddition = getSkillLVAddition(selectedPassiveSkill.skillLv);
+      var toggleRate = getToggleRate(selectedPassiveSkill.skillLv);
+      if (passiveSkill.type === PASSIVE_SKILL_TYPE.BUFF_UP) {
+        buffUps.push({
+          effect: passiveSkill.basicEffect.expectation * slvAddition,
+          toggleRate: toggleRate
+        });
+      }
+      if (passiveSkill.type === PASSIVE_SKILL_TYPE.STATUS_UP) {
+        var supportSkillAmount = 20;
+        var toggleFrequency = supportSkillAmount * toggleRate;
+        calculateSumCoefficient(passiveBuffCoefficient, passiveSkill, slvAddition, status.enemyPhysicDPS, status.enemyMagicDPS, toggleFrequency);
+      }
+      if (passiveSkill.type === PASSIVE_SKILL_TYPE.GAY) {
+        gays.push({
+          effect: passiveSkill.effect,
+          toggleRate: toggleRate,
+          dudRate: 1 - toggleRate
+        });
+      }
+    });
 
     var debuffCoefficient = {
       exceptedPhysicATK: 0,
@@ -901,39 +1139,37 @@
       withoutGay: 0,
       withGay: 0
     };
-    var activeSkillGroupsElements = document.getElementsByClassName("active-skill-group");
-    var enemyPhysicDPS = document.getElementById("enemyPhysicDPS").value;
-    var enemyMagicDPS = document.getElementById("enemyMagicDPS").value;
-    var ourPhysicDPS = document.getElementById("ourPhysicDPS").value;
-    var ourMagicDPS = document.getElementById("ourMagicDPS").value;
-    Array.from(activeSkillGroupsElements).forEach(function (activeSkillGroup) {
-      var activeSkillSelect = activeSkillGroup.querySelector(".active-skill");
-      var selectedOption = activeSkillSelect.options[activeSkillSelect.selectedIndex];
-      if (selectedOption) {
-        var selectedActiveSkillId = selectedOption.value;
-        var selectedActiveSkill = ACTIVE_SKILL_DB[selectedActiveSkillId];
-        var skillLV = activeSkillGroup.querySelector("input.skill-lv").value;
-        var slvAddition = getSkillLVAddition(skillLV);
 
-        calculateSpConsume(spConsume,selectedActiveSkill,gay);
-        if
-        (selectedActiveSkill.type === "debuff") {
-          calculateSumCoefficient(debuffCoefficient, selectedActiveSkill, slvAddition, enemyPhysicDPS, enemyMagicDPS);
-        }
-        else {
-          calculateSumCoefficient(buffCoefficient, selectedActiveSkill, slvAddition, ourPhysicDPS, ourMagicDPS);
-        }
+    var selectedActiveSkills = JSON.parse(localStorage.selectedActiveSkills);
+    selectedActiveSkills.forEach(function (selectedActiveSkill) {
+      var activeSkill = ACTIVE_SKILL_DB[selectedActiveSkill.activeSkillId];
+      var slvAddition = getSkillLVAddition(selectedActiveSkill.skillLv);
+      calculateSpConsume(spConsume, activeSkill, gays);
+      if (activeSkill.type === "debuff") {
+        calculateSumCoefficient(debuffCoefficient, activeSkill, slvAddition, status.enemyPhysicDPS, status.enemyMagicDPS, 1);
+      } else {
+        calculateSumCoefficient(buffCoefficient, activeSkill, slvAddition, status.ourPhysicDPS, status.ourMagicDPS, 1);
       }
     });
-    var debuffResult = calculateEffectiveness(debuffCoefficient);
+    var jobAdditionBook = 1;
+    if (status.job === "book") {
+      jobAdditionBook = 1.1;
+    }
+    var debuffResult = calculateEffectiveness(debuffCoefficient, status, buffUps, null, jobAdditionBook);
     showDebuff(debuffResult);
-    var buffResult = calculateEffectiveness(buffCoefficient);
+
+    var jobAdditionInstument = 1;
+    if (status.job === "instrument") {
+      jobAdditionInstument = 1.1;
+    }
+    var buffResult = calculateEffectiveness(buffCoefficient, status, buffUps, passiveBuffCoefficient, jobAdditionInstument);
     showBuff(buffResult);
+
     showSpConsume(spConsume);
   }
 
   /**
-   * 计算技能等级加成
+   * 計算技能等級加成
    * @param slv 技能等级
    * @returns {number}
    */
@@ -950,6 +1186,23 @@
       bonus += 0.05
     }
     return 1 + (slv - 1) * 0.03 + bonus;
+  }
+
+  /**
+   * 計算被動技能發動率
+   * @param slv 技能等級
+   * @returns {number}
+   */
+  function getToggleRate(slv) {
+    slv = Number(slv);
+    var bonus = 0;
+    if (slv > 14) {
+      bonus += 0.005
+    }
+    if (slv === 20) {
+      bonus += 0.01
+    }
+    return 0.04 + (slv - 1) * 0.005 + bonus;
   }
 </script>
 

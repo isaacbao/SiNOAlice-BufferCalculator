@@ -475,7 +475,7 @@
     buffUp25: {
       name: "起死回生(弐)",
       type: PASSIVE_SKILL_TYPE.BUFF_UP,
-      basicEffect: {max: 0.3, expectation: 0.25, min: 0.2}
+      basicEffect: {max: 0.27, expectation: 0.24, min: 0.18}
     },
     buffUp30: {
       name: "起死回生(参)",
